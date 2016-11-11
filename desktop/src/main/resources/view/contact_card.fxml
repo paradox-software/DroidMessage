@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<!--
+  ~ Copyright (c) 2016 Jordan Knott
+  ~ License file can be found in the root directory (LICENSE.txt)
+  ~
+  ~ For the project DroidMessage, which can be found at: www.github.com/paradox-software/droidmessage
+  ~
+  -->
+
+<fx:root minHeight="84.0" minWidth="250.0" prefHeight="84.0" prefWidth="250.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+      <ImageView fx:id="contactImage" fitHeight="64.0" fitWidth="64.0" layoutX="7.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
+      <Label fx:id="contactName" layoutX="75.0" layoutY="11.0" prefHeight="27.0" prefWidth="133.0" text="Name" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="11.0">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="contactNumber" layoutX="75.0" layoutY="34.0" prefHeight="24.0" prefWidth="134.0" text="Phone" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="34.0" />
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
+</fx:root>

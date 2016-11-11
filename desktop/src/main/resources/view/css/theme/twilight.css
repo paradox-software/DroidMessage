@@ -1,0 +1,56 @@
+.primary-color {
+    -fx-background-color: #9C27B0;
+}
+
+.primary-dark-color {
+    -fx-background-color: #7B1FA2;
+}
+
+.primary-light-color {
+    -fx-background-color: #E1BEE7;
+}
+
+.accent-color {
+    -fx-background-color: #03A9F4;
+}
+
+.primary-text-color {
+    -fx-fill: #212121;
+}
+
+.secondary-text-color {
+    -fx-fill: #757575;
+}
+
+.text-color {
+    -fx-fill: #ffffff;
+}
+
+.background-color {
+    -fx-background-color: #eceff1;
+}
+
+.owner-message-color {
+    -fx-background-color: #fff;
+}
+
+.message-blob {
+    -fx-background-radius: 25;
+}
+
+.jfx-text-field, .jfx-password-field, .jfx-text-area {
+    -fx-focus-color: #9C27B0;
+    -fx-unfocus-color: #4d4d4d;
+}
+
+.list-view-color .jfx-rippler {
+     -fx-rippler-fill: rgb(156,39,176);
+}
+
+.jfx-decorator {
+    -fx-decorator-color: #7B1FA2;
+}
+
+.jfx-tool-bar{
+    -fx-background-color: #9C27B0;
+}

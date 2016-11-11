@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#8C27B0</color>
+    <color name="colorPrimaryDark">#7B1Fa2</color>
+    <color name="colorAccent">#00BCD4</color>
+    <color name="textPrimary">#212121</color>
+    <color name="textSecondary">#757575</color>
+    <color name="lightPrimary">#E1BEE7</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="logoStroke">#000000</color>
+    <color name="logoFill">#DDFFDD</color>
+    <color name="fab_ripple">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000</color>
+    <color name="darkBlue">#1976D2</color>
+    <color name="darkGreen">#388E3C</color>
+    <color name="darkIndigo">#303F9F</color>
+</resources>

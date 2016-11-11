@@ -1,0 +1,77 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://plugins.gradle.org/m2'
+        }
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'gradle.plugin.edu.sc.seis.gradle:launch4j:1.6.2'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.4"
+    }
+}
+
+apply plugin: "java"
+apply plugin: 'net.ltgt.apt'
+apply plugin: 'edu.sc.seis.launch4j'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'application'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile "junit:junit:4+"
+    compile project(":common")
+    compile "org.slf4j:slf4j-api:1.7.21"
+    compile  'ch.qos.logback:logback-classic:1.1.7'
+    compile 'ch.qos.logback:logback-core:1.1.7'
+
+    compile 'io.reactivex:rxjava:1.2.1'
+    compile 'io.reactivex:rxjavafx:0.2.0'
+
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    compile files('libs/jfoenix-0.0.0-SNAPSHOT.jar')
+    compile files('libs/jna-4.2.2.jar')
+    compile files('libs/jna-platform-4.2.2.jar')
+    compile files('libs/oshi-core-3.2.jar')
+    compile files('libs/jansi-1.12.jar')
+    compile files('libs/core-8.0b8.jar')
+    compile files('libs/datafx-8.0b8.jar')
+    compile files('libs/flow-8.0b8.jar')
+    compile files('libs/flow-8.0b8.jar')
+
+
+    compile 'com.google.dagger:dagger:2.4'
+    apt "com.google.dagger:dagger-compiler:2.4"
+    compile 'javax.annotation:jsr250-api:1.0'
+    compile 'javax.inject:javax.inject:1'
+}
+
+
+mainClassName = "net.thenightwolf.dm.desktop.MainApp"
+
+shadowJar {
+    baseName = 'server'
+    classifier = null
+    version = null
+}
+
+launch4j {
+    outfile = "DroidMessage.exe"
+    headerType = "console"
+    mainClassName = project.mainClassName
+
+    copyConfigurable = project.tasks.shadowJar.outputs.files
+    jar = "lib/${project.tasks.shadowJar.archiveName}"
+}
+
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'

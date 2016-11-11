@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+            android:key="isFastboot"
+            android:title="@string/fastboot_title"
+            android:summary="@string/fastboot_summary"
+            android:defaultValue="false" />
+    <EditTextPreference
+            android:key="@string/passwordID"
+            android:title="@string/password_setting_title"
+            android:summary="@string/password_summary" />
+</PreferenceScreen>

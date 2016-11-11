@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import java.lang.String?>
+<?import com.jfoenix.controls.JFXListView?>
+
+<!--
+  ~ Copyright (c) 2016 Jordan Knott
+  ~ License file can be found in the root directory (LICENSE.txt)
+  ~
+  ~ For the project DroidMessage, which can be found at: www.github.com/paradox-software/droidmessage
+  ~
+  -->
+
+<StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+    <styleClass>
+        <String fx:value="side-menu" />
+    </styleClass>
+    <JFXListView  fx:id="sideList">
+        <Label fx:id="home"> Home </Label>
+    </JFXListView>
+</StackPane>

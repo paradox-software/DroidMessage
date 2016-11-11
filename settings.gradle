@@ -1,0 +1,3 @@
+include ':desktop', ':android', ':common'
+rootProject.name = 'droidmessage'
+
