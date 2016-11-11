@@ -1,0 +1,30 @@
+/*
+ * Copyright (c) 2016 Jordan Knott
+ * License file can be found in the root directory (LICENSE.txt)
+ *
+ * For the project DroidMessage, which can be found at: www.github.com/paradox-software/droidmessage
+ *
+ */
+ 
+@font-face {
+  font-family: Roboto;
+  src: url("../roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Roboto Medium";
+  src: url("../roboto/Roboto-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Roboto Light";
+  src: url("../roboto/Roboto-Light.ttf");
+}
+
+@font-face {
+  font-family: "Roboto Bold";
+  src: url("../roboto/Roboto-Bold.ttf");
+}
+
+
+/* NOTE: the file font must be included as the 1st css file in order to work */

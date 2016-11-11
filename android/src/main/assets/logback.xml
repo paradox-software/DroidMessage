@@ -1,0 +1,22 @@
+<!--
+  ~ Copyright (c) 2016 Jordan Knott
+  ~ License file can be found in the root directory (LICENSE.txt)
+  ~
+  ~ For the project DroidMessage, which can be found at: www.github.com/paradox-software/droidmessage
+  ~
+  -->
+
+<configuration>
+    <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+        <tagEncoder>
+            <pattern>%logger{12}</pattern>
+        </tagEncoder>
+        <encoder>
+            <pattern>[%-20thread] %msg</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="logcat" />
+    </root>
+</configuration>

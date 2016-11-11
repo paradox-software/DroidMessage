@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+
+<!--
+  ~ Copyright (c) 2016 Jordan Knott
+  ~ License file can be found in the root directory (LICENSE.txt)
+  ~
+  ~ For the project DroidMessage, which can be found at: www.github.com/paradox-software/droidmessage
+  ~
+  -->
+
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="300.0" style="-fx-background-color: #00D; -fx-border-radius: 10 10 10 10; -fx-background-radius: 35 35 35 35;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+      <Label fx:id="contactName" layoutX="25.0" prefHeight="33.0" prefWidth="103.0" text="Name" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="172.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="smsDate" alignment="CENTER_RIGHT" layoutX="195.0" layoutY="93.0" prefHeight="17.0" prefWidth="80.0" text="Date" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="25.0">
+      <font>
+         <Font size="14.0" />
+      </font></Label>
+   <TextFlow fx:id="smsMessage" layoutX="25.0" layoutY="37.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="42.0" prefWidth="250.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="37.0">
+      <padding>
+         <Insets bottom="10.0" />
+      </padding></TextFlow>
+   <ImageView fx:id="errorImage" fitHeight="16.0" fitWidth="16.0" layoutX="5.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+</fx:root>
