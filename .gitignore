@@ -1,0 +1,10 @@
+.gradle
+.idea
+Thumbs.db
+.DS_Store
+/build
+/android/build
+/desktop/build
+/logs
+/common/build
+/.idea
