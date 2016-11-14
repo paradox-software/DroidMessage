@@ -10,10 +10,13 @@ import io.datafx.controller.flow.context.ViewFlowContext;
 import io.datafx.core.concurrent.ThreadPoolExecutorFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import net.thenightwolf.dm.common.model.message.Sms;
 import net.thenightwolf.dm.common.model.message.ThreadBundle;
 import net.thenightwolf.dm.desktop.controller.MainController;
+import net.thenightwolf.dm.desktop.controller.components.card.DefaultContactImage;
 import net.thenightwolf.dm.desktop.controller.components.message.MessageGrid;
 import net.thenightwolf.dm.desktop.startup.LogHeaderCommand;
 import org.slf4j.Logger;
@@ -58,6 +61,7 @@ public class MainApp extends Application {
         stage.setTitle("SMS Blob");
         stage.show();
         */
+
 
         new LogHeaderCommand().execute();
 
