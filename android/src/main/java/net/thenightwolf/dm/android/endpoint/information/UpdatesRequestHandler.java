@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import net.thenightwolf.dm.android.DMApplication;
 import net.thenightwolf.dm.android.endpoint.request.Authenticator;
 import net.thenightwolf.dm.android.endpoint.request.StandardRequestHandler;
-import net.thenightwolf.dm.android.manifest.ManifestGenerator;
-import net.thenightwolf.dm.common.model.Manifest;
-import net.thenightwolf.dm.common.model.message.Sms;
+import net.thenightwolf.dm.common.model.message.Message;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD;
 import org.nanohttpd.protocols.http.response.IStatus;
@@ -27,8 +25,8 @@ public class UpdatesRequestHandler extends StandardRequestHandler {
         Authenticator auth = new Authenticator();
         if(auth.authenticate(session)) {
 
-            List<Sms> latestSms = new ArrayList<Sms>();
-            Sms current;
+            List<Message> latestSms = new ArrayList<Message>();
+            Message current;
             while((current = DMApplication.getMessageQueue().poll()) != null){
                 latestSms.add(current);
             }

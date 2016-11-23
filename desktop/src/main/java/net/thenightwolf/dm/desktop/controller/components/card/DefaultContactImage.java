@@ -2,6 +2,7 @@ package net.thenightwolf.dm.desktop.controller.components.card;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import net.thenightwolf.dm.desktop.controller.components.colour.Colour;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -32,13 +33,15 @@ public class DefaultContactImage {
         return null;
     }
 
-    private Color getColor() {
+    private Colour getColor() {
         Random ran = new Random();
-        switch (ran.nextInt(6)){
-            case 1: return Color.MAGENTA;
-            case 2: return Color.cyan;
-            case 3: return Color.PINK;
-            default: return Color.BLACK;
+        switch (ran.nextInt(5)){
+            case 0: return Colour.YELLOW_GOLD;
+            case 1: return Colour.LIGHT_BLUE;
+            case 2: return Colour.SEAWATER;
+            case 3: return Colour.ORANGE_CLAY;
+            case 4: return Colour.PURPLE_CANDY;
+            default: return Colour.LIGHT_BLUE;
         }
     }
 
@@ -49,10 +52,8 @@ public class DefaultContactImage {
         Graphics2D g2d = img.createGraphics();
         g2d.drawImage(old, 0, 0, null);
         g2d.setPaint(Color.white);
-        g2d.setFont(roboto.deriveFont(80f));
+        g2d.setFont(roboto.deriveFont(320f));
         FontMetrics fm = g2d.getFontMetrics();
-        //int x = img.getWidth() / 2 - fm.stringWidth(s) / 2;
-        //int y = img.getHeight() / 2 - fm.getHeight() / 2;
 
         int x = (img.getWidth() - fm.stringWidth(character)) / 2;
         int y = ((img.getHeight() - fm.getHeight()) / 2) + fm.getAscent();
@@ -70,7 +71,7 @@ public class DefaultContactImage {
         return null;
     }
 
-    private BufferedImage colorImage(BufferedImage image, Color color){
+    private BufferedImage colorImage(BufferedImage image, Colour color){
         int width = image.getWidth();
         int height = image.getHeight();
 

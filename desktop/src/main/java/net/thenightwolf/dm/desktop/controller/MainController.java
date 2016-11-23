@@ -25,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import net.thenightwolf.dm.desktop.controller.inner.MessengerOverviewController;
 
 import javax.annotation.PostConstruct;
 
@@ -46,11 +47,20 @@ public class MainController {
     @FXML private JFXPopup toolbarPopup;
     @FXML private Label exit;
 
-    private FlowHandler flowHandler;
-    private FlowHandler sideMenuFlowHandler;
-
     @PostConstruct
     public void init() throws FlowException {
+        buildTitleBurger();
+
+        buildOptionsBurger();
+
+        context = new ViewFlowContext();
+
+        buildInnerFlow();
+
+        buildSideMenuFlow();
+    }
+
+    private void buildTitleBurger(){
         drawer.setOnDrawerOpening((event -> {
             titleBurger.getAnimation().setRate(1);
             titleBurger.getAnimation().play();
@@ -63,7 +73,9 @@ public class MainController {
             if(drawer.isHidden() || drawer.isHidding()) drawer.open();
             else drawer.close();
         }));
+    }
 
+    private void buildOptionsBurger(){
         toolbarPopup.setPopupContainer(root);
         toolbarPopup.setSource(optionsRippler);
         root.getChildren().remove(toolbarPopup);
@@ -75,19 +87,21 @@ public class MainController {
         exit.setOnMouseClicked((event) -> {
             Platform.exit();
         });
+    }
 
-        context = new ViewFlowContext();
-
-        Flow innerFlow = new Flow(ConnectionOverviewController.class)
-                .withLink(ConnectionOverviewController.class, "messenger", MessengerOverviewController.class);
-        flowHandler = innerFlow.createHandler(context);
+    private void buildInnerFlow() throws FlowException {
+        Flow innerFlow = new Flow(net.thenightwolf.dm.desktop.controller.inner.ConnectionOverviewController.class)
+                .withLink(net.thenightwolf.dm.desktop.controller.inner.ConnectionOverviewController.class, "messenger", MessengerOverviewController.class);
+        FlowHandler flowHandler = innerFlow.createHandler(context);
         context.register("ContentFlowHandler", flowHandler);
         context.register("ContentFlow", innerFlow);
         drawer.setContent(flowHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
         context.register("ContentPane", drawer.getContent().get(0));
+    }
 
+    private void buildSideMenuFlow() throws FlowException {
         Flow sideMenuFlow = new Flow(SideMenuController.class);
-        sideMenuFlowHandler = sideMenuFlow.createHandler(context);
+        FlowHandler sideMenuFlowHandler = sideMenuFlow.createHandler(context);
         drawer.setSidePane(sideMenuFlowHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
     }
 }

@@ -14,7 +14,9 @@ import android.content.Intent;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import net.thenightwolf.dm.android.DMApplication;
-import net.thenightwolf.dm.common.model.message.Sms;
+import net.thenightwolf.dm.common.model.message.Message;
+import net.thenightwolf.dm.common.model.message.PhoneFormatter;
+import net.thenightwolf.dm.common.model.message.builder.MessageBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,10 +36,15 @@ public class SmsListener extends BroadcastReceiver {
                         smsMessage.getOriginatingAddress(),
                         smsMessage.getMessageBody(),
                         new Date(smsMessage.getTimestampMillis()).toString());
-                Sms sms = new Sms(1, smsMessage.getMessageBody(),
-                        smsMessage.getOriginatingAddress(),
-                        new Date(smsMessage.getTimestampMillis()));
-                DMApplication.getMessageQueue().add(sms);
+
+                Message message = new MessageBuilder(-1)
+                        .setSMSMessage()
+                        .setNumber(PhoneFormatter.cleanPhoneNumber(smsMessage.getOriginatingAddress()))
+                        .setContent(smsMessage.getMessageBody())
+                        .setSentDate(smsMessage.getTimestampMillis())
+                        .build();
+
+                DMApplication.getMessageQueue().add(message);
             }
         }
     }

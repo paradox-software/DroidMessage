@@ -13,18 +13,25 @@ import java.util.Date;
 /**
  * Created by burni_000 on 9/19/2016.
  */
-public class Sms {
+public class Message {
+
+    public transient static final int SMS_TYPE = 1;
+    public transient static final int MMS_IMAGE = 2;
+    public transient static final int MMS_TEXT = 3;
+
     private int id;
-    private String message;
+    private int messageType;
     private String number;
+    private String content;
     private Date sentDate;
 
-    public Sms(){ }
+    public Message(){ }
 
-    public Sms(int id, String message, String number, Date sentDate) {
+    public Message(int id, int messageType, String number, String content, Date sentDate) {
         this.id = id;
-        this.message = message;
+        this.messageType = messageType;
         this.number = number;
+        this.content = content;
         this.sentDate = sentDate;
     }
 
@@ -32,8 +39,12 @@ public class Sms {
         return id;
     }
 
-    public String getMessage() {
-        return message;
+    public int getMessageType() {
+        return messageType;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public String getNumber() {

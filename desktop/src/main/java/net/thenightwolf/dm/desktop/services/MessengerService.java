@@ -1,8 +1,7 @@
 package net.thenightwolf.dm.desktop.services;
 
-import net.thenightwolf.dm.common.model.Manifest;
-import net.thenightwolf.dm.common.model.message.Sms;
-import net.thenightwolf.dm.common.model.message.ThreadBundle;
+import net.thenightwolf.dm.common.model.message.ConversationMessageBundle;
+import net.thenightwolf.dm.common.model.message.Message;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -12,12 +11,12 @@ public interface MessengerService {
 
     @FormUrlEncoded
     @POST("/thread/{id}")
-    Call<ThreadBundle> getThreadBundle(@Header("Authorization") String token,
-                                       @Path("id") int threadID,
-                                       @Field("limit") int limit,
-                                       @Field("offset") int offset);
+    Call<ConversationMessageBundle> getThreadBundle(@Header("Authorization") String token,
+                                                    @Path("id") int threadID,
+                                                    @Field("limit") int limit,
+                                                    @Field("offset") int offset);
     @POST("/updates")
-    Call<List<Sms>> getUpdates(@Header("Authorization") String token);
+    Call<List<Message>> getUpdates(@Header("Authorization") String token);
 
     @FormUrlEncoded
     @POST("/sms")

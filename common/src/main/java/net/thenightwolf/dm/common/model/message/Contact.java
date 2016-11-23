@@ -18,7 +18,7 @@ public class Contact {
     public String cleanNumber;
     public String id;
     public List<Long> rawIds;
-    public List<Sms> messages;
+    public List<Message> messages;
     public int boundThreadId;
 
     @Override

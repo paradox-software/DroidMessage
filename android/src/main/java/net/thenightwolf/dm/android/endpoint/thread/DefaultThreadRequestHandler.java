@@ -5,7 +5,7 @@ import net.thenightwolf.dm.android.DMApplication;
 import net.thenightwolf.dm.android.message.SmsManager;
 import net.thenightwolf.dm.android.endpoint.request.StandardRequestHandler;
 import net.thenightwolf.dm.android.utils.SessionUtils;
-import net.thenightwolf.dm.common.model.message.ConvoThread;
+import net.thenightwolf.dm.common.model.message.Conversation;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD;
 import org.nanohttpd.protocols.http.response.IStatus;
@@ -35,7 +35,7 @@ public class DefaultThreadRequestHandler extends StandardRequestHandler {
     @Override
     public String postMethod(Map<String, String> params, IHTTPSession session) throws IOException, NanoHTTPD.ResponseException {
         SmsManager smsManager = new SmsManager(DMApplication.getAppContext());
-        List<ConvoThread> threads = smsManager.getAllThreads();
+        List<Conversation> threads = smsManager.getAllThreads();
         return new Gson().toJson(threads);
     }
 

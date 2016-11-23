@@ -8,12 +8,12 @@
 
 package net.thenightwolf.dm.common.model.comparator;
 
-import net.thenightwolf.dm.common.model.message.ConvoThread;
+import net.thenightwolf.dm.common.model.message.Conversation;
 
 import java.util.Comparator;
 import java.util.Date;
 
-public class TemporalThreadComparator implements Comparator<ConvoThread> {
+public class TemporalThreadComparator implements Comparator<Conversation> {
 
     int ascending;
 
@@ -29,7 +29,7 @@ public class TemporalThreadComparator implements Comparator<ConvoThread> {
     }
 
     @Override
-    public int compare(ConvoThread o1, ConvoThread o2) {
-        return ascending * (new Date(o1.date).compareTo(new Date(o2.date)));
+    public int compare(Conversation o1, Conversation o2) {
+        return ascending * (new Date(o1.getLastMessageDate()).compareTo(new Date(o2.getLastMessageDate())));
     }
 }

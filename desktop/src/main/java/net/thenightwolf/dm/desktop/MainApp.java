@@ -1,29 +1,17 @@
 package net.thenightwolf.dm.desktop;
 
 import com.jfoenix.controls.JFXDecorator;
-import io.datafx.controller.context.ApplicationContext;
-import io.datafx.controller.context.FXMLApplicationContext;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.container.DefaultFlowContainer;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
-import io.datafx.core.concurrent.ThreadPoolExecutorFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import net.thenightwolf.dm.common.model.message.Sms;
-import net.thenightwolf.dm.common.model.message.ThreadBundle;
 import net.thenightwolf.dm.desktop.controller.MainController;
-import net.thenightwolf.dm.desktop.controller.components.card.DefaultContactImage;
-import net.thenightwolf.dm.desktop.controller.components.message.MessageGrid;
 import net.thenightwolf.dm.desktop.startup.LogHeaderCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 public class MainApp extends Application {
 
@@ -41,14 +29,14 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
 
         /*
-        ThreadBundle bundle = new ThreadBundle();
+        ConversationMessageBundle bundle = new ConversationMessageBundle();
         bundle.messages = new ArrayList<>();
 
         String myNumber = "9189231326";
         String otherNumber ="6669996666";
 
         for(int i=0; i<15; i++){
-            Sms sms = new Sms(50, "Hello " + i, i % 2 == 0 ? myNumber : otherNumber, new Date());
+            Message sms = new Message(50, "Hello " + i, i % 2 == 0 ? myNumber : otherNumber, new Date());
             bundle.messages.add(sms);
         }
 
