@@ -4,14 +4,14 @@ import net.thenightwolf.dm.android.DMApplication;
 import net.thenightwolf.dm.common.model.Manifest;
 import net.thenightwolf.dm.common.model.message.Contact;
 import net.thenightwolf.dm.android.message.ContactsManager;
-import net.thenightwolf.dm.common.model.message.ConvoThread;
+import net.thenightwolf.dm.common.model.message.Conversation;
 import net.thenightwolf.dm.android.message.SmsManager;
 
 import java.util.List;
 
 public class ManifestGenerator {
     List<Contact> contacts;
-    List<ConvoThread> threads;
+    List<Conversation> threads;
     public Manifest generate(){
         contacts = ContactsManager.getAllContacts();
 
@@ -29,10 +29,10 @@ public class ManifestGenerator {
 
     private void bindThreadsToContacts(){
         int counter = 0;
-        for (ConvoThread thread : threads) {
+        for (Conversation thread : threads) {
             for (Contact contact : contacts) {
-                if (contact.cleanNumber.equals(thread.address)) {
-                    contact.boundThreadId = thread.thread_id;
+                if (contact.cleanNumber.equals(thread.getAddress())) {
+                    contact.boundThreadId = thread.getConversationId();
                     counter++;
                 }
             }

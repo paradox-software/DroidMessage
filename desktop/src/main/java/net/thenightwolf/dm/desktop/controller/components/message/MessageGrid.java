@@ -1,19 +1,14 @@
 package net.thenightwolf.dm.desktop.controller.components.message;
 
-import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import net.thenightwolf.dm.common.model.comparator.TemporalSmsComparator;
-import net.thenightwolf.dm.common.model.comparator.TemporalThreadComparator;
-import net.thenightwolf.dm.common.model.message.ConvoThread;
-import net.thenightwolf.dm.common.model.message.Sms;
-import net.thenightwolf.dm.common.model.message.ThreadBundle;
+import net.thenightwolf.dm.common.model.message.ConversationMessageBundle;
+import net.thenightwolf.dm.common.model.message.Message;
 import net.thenightwolf.dm.desktop.controller.components.SmsBlob;
-
-import static java.awt.Color.blue;
+import net.thenightwolf.dm.desktop.data.LocalMessageBundle;
 
 public class MessageGrid extends GridPane {
 
@@ -24,6 +19,7 @@ public class MessageGrid extends GridPane {
 
     private int index = 0;
 
+    private Image contactImage;
 
 
     public MessageGrid(){
@@ -33,22 +29,24 @@ public class MessageGrid extends GridPane {
         setPadding(new Insets(10, 10, 10, 10));
     }
 
-    public void load(ThreadBundle thread){
-        thread.messages.sort(new TemporalSmsComparator(true));
-        thread.messages.forEach(this::addSms);
+    public void load(LocalMessageBundle thread){
+        if(thread.getContactImage() != null)
+            contactImage = thread.getContactImage();
+        thread.getBundle().messages.sort(new TemporalSmsComparator(true));
+        thread.getBundle().messages.forEach(this::addSms);
         autosize();
         layout();
     }
 
-    public void addSms(Sms sms){
-        if(sms.getNumber().equals(currentNumber)){
-            SmsBlob blob = new SmsBlob(sms.getMessage(), sms.getSentDate().toGMTString());
+    public void addSms(Message message){
+        if(message.getNumber().equals(currentNumber)){
+            SmsBlob blob = new SmsBlob(message.getContent(), message.getSentDate().toGMTString());
             setHgrow(blob, Priority.ALWAYS);
             setVgrow(blob, Priority.ALWAYS);
             setColumnSpan(blob, 2);
             add(blob, 1, index);
         } else {
-            SmsBlob blob = new SmsBlob(sms.getMessage(), sms.getSentDate().toGMTString(), new Image("/view/icons/account_black_48.png"));
+            SmsBlob blob = new SmsBlob(message.getContent(), message.getSentDate().toGMTString(), contactImage);
             setHgrow(blob, Priority.ALWAYS);
             setVgrow(blob, Priority.ALWAYS);
             setColumnSpan(blob, 2);

@@ -8,13 +8,11 @@
 
 package net.thenightwolf.dm.common.model.comparator;
 
-import net.thenightwolf.dm.common.model.message.ConvoThread;
-import net.thenightwolf.dm.common.model.message.Sms;
+import net.thenightwolf.dm.common.model.message.Message;
 
 import java.util.Comparator;
-import java.util.Date;
 
-public class TemporalSmsComparator implements Comparator<Sms> {
+public class TemporalSmsComparator implements Comparator<Message> {
 
     int ascending;
 
@@ -30,7 +28,7 @@ public class TemporalSmsComparator implements Comparator<Sms> {
     }
 
     @Override
-    public int compare(Sms o1, Sms o2) {
+    public int compare(Message o1, Message o2) {
         return ascending * ((o1.getSentDate()).compareTo(o2.getSentDate()));
     }
 }

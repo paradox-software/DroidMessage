@@ -67,13 +67,11 @@ public class DirectConnectDialog extends JFXDialog {
         super.setOverlayClose(false);
     }
 
-    public JFXSpinner getConnectionSpinner() {
-        return connectionSpinner;
-    }
+    public void hideSpinner(){ connectionSpinner.setOpacity(0); }
 
-    public Label getConnectionAchievedLabel() {
-        return connectionAchievedLabel;
-    }
+    public void showSpinner(){ connectionSpinner.setOpacity(1); }
+
+    public void showCompleteLabel(){ connectionAchievedLabel.setOpacity(1); }
 
     public JFXButton getConnectButton() {
         return connectButton;

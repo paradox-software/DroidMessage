@@ -15,7 +15,7 @@
   -->
 
 <fx:root minHeight="84.0" minWidth="250.0" prefHeight="84.0" prefWidth="250.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
-      <ImageView fx:id="contactImage" fitHeight="64.0" fitWidth="64.0" layoutX="7.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
+      <ImageView fx:id="contactImage" fitHeight="48.0" fitWidth="48.0" layoutX="7.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
       <Label fx:id="contactName" layoutX="75.0" layoutY="11.0" prefHeight="27.0" prefWidth="133.0" text="Name" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="11.0">
          <font>
             <Font name="System Bold" size="16.0" />

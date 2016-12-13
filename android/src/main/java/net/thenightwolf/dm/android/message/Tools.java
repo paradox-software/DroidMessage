@@ -297,4 +297,26 @@ public class Tools {
     }
 
 
+    public static String join(List<String> list, String sep) {
+        return join(list, sep, false);
+    }
+
+    public static String join(List<String> list, String sep, boolean bold) {
+        String res = "";
+
+        for (String s : list) {
+            res += s + sep;
+        }
+
+        return delLastChar(res, sep.length());
+    }
+
+    public static String delLastChar(String s, int nb) {
+        try {
+            return s.substring(0, s.length() - nb);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
 }

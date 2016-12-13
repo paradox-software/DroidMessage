@@ -11,21 +11,27 @@ package net.thenightwolf.dm.android.message;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v7.view.menu.ListMenuItemView;
+import android.util.Base64;
 import android.util.Log;
+import net.thenightwolf.dm.android.DMApplication;
 import net.thenightwolf.dm.android.R;
-import net.thenightwolf.dm.common.model.message.ConvoThread;
-import net.thenightwolf.dm.common.model.message.Sms;
+import net.thenightwolf.dm.common.model.message.Conversation;
+import net.thenightwolf.dm.common.model.message.Message;
+import net.thenightwolf.dm.common.model.message.builder.ConversationBuilder;
+import net.thenightwolf.dm.common.model.message.builder.MessageBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.id;
 import static android.telephony.SmsManager.getDefault;
 
 /**
@@ -36,7 +42,7 @@ public class SmsManager {
 
     private static final Logger logger = LoggerFactory.getLogger(SmsManager.class);
 
-    private String smsNumber = "918-923-1326";
+    private String smsNumber = "9189231326";
 
     private static final Uri THREADS_CONTENT_URI = Uri.parse("content://mms-sms/conversations/");
     private static final Uri SMS_CONTENT_URI = Uri.parse("content://sms");
@@ -55,56 +61,92 @@ public class SmsManager {
         _context = baseContext;
     }
 
-    public ArrayList<Sms> getAllSms(){
+    public ArrayList<Message> getAllSms(){
         return getAllSms(null);
     }
 
-    public ArrayList<Sms> getLastUnreadSms() {
+    public ArrayList<Message> getLastUnreadSms() {
         return getAllSms("read = 0");
     }
 
-    public ArrayList<Sms> getLastSms(){
-        ArrayList<Sms> res = new ArrayList<Sms>();
+    public Message getLastUnownedSms(int threadID){
+        String selection = "type=1 AND thread_id=" + threadID;
+        Message message = null;
+        Cursor c = _context.getContentResolver().query(SMS_CONTENT_URI, COLUMNS, selection, null, "date DESC LIMIT 1");
+        Log.d("SMS count", "counter: " + c.getCount());
+        if(c != null && c.moveToFirst()){
+            boolean isSent = Tools.getInt(c, "type") == 2;
+            message = new MessageBuilder(Tools.getInt(c, "_id"))
+                    .setSMSMessage()
+                    .setContent(Tools.getString(c, "body"))
+                    .setNumber(Tools.getString(c, "address"))
+                    .setSentDate(Tools.getDateMilliSeconds(c, "date"))
+                    .build();
+        }
+        c.close();
+        return message;
+    }
+
+    public ArrayList<Message> getLastSms(){
+        ArrayList<Message> res = new ArrayList<Message>();
         Cursor c = _context.getContentResolver().query(SMS_CONTENT_URI, COLUMNS, null, null, "date DESC LIMIT 1");
         Log.d("SMS count", "counter: " + c.getCount());
         if(c != null && c.moveToFirst()){
             boolean isSent = Tools.getInt(c, "type") == 2;
-                Sms sms = new Sms(Tools.getInt(c, "_id"),
-                        Tools.getString(c, "body"),
-                        Tools.getString(c, "address"),
-                        Tools.getDateMilliSeconds(c, "date"));
-            res.add(sms);
+            Message message = new MessageBuilder(Tools.getInt(c, "_id"))
+                    .setSMSMessage()
+                    .setContent(Tools.getString(c, "body"))
+                    .setNumber(Tools.getString(c, "address"))
+                    .setSentDate(Tools.getDateMilliSeconds(c, "date"))
+                    .build();
+            res.add(message);
         }
         c.close();
         return res;
     }
 
-    public ArrayList<Sms> getLastSmsForThread(int id){
+    public ArrayList<Message> getLastSmsForThread(int id){
         return getAllSmsForThread(id, 0, 1);
     }
 
-    public ArrayList<Sms> getAllSmsForThread(int id, int offest, int limit){
+    public ArrayList<Message> getAllSmsForThread(int id, int offest, int limit){
         String where = "thread_id = " + id;
-        ArrayList<Sms> res = new ArrayList<Sms>();
+        ArrayList<Message> res = new ArrayList<Message>();
         Cursor c = _context.getContentResolver().query(SMS_CONTENT_URI, COLUMNS, where, null, "date DESC LIMIT " + limit + " OFFSET " + offest);
         Log.d("SMS count", "counter: " + c.getCount());
+        return query(c);
+    }
+
+    public ArrayList<Message> getAllSmsForThread(int id){
+        String where = "thread_id = " + id;
+        Cursor c = _context.getContentResolver().query(SMS_CONTENT_URI, COLUMNS, where, null, "date DESC");
+        Log.d("SMS count", "counter: " + c.getCount());
+        return query(c);
+    }
+
+    private ArrayList<Message> query(Cursor c){
+        ArrayList<Message> res = new ArrayList<Message>();
         if(c != null && c.moveToFirst()){
             do {
                 boolean isSent = Tools.getInt(c, "type") == 2;
                 String number = getCorrectNumber(Tools.getString(c, "address"),
                         Tools.getInt(c, "type"));
 
-                Sms sms = new Sms(Tools.getInt(c, "_id"),
-                        Tools.getString(c, "body"),
-                        number,
-                        Tools.getDateMilliSeconds(c, "date"));
-                logger.info("SMS found: {}", sms.toString());
-                res.add(sms);
+                Message message = new MessageBuilder(Tools.getInt(c, "_id"))
+                        .setSMSMessage()
+                        .setContent(Tools.getString(c, "body"))
+                        .setNumber(number)
+                        .setSentDate(Tools.getDateMilliSeconds(c, "date"))
+                        .build();
+
+                logger.info("SMS found: {}", message.toString());
+                res.add(message);
             } while(c.moveToNext());
         }
         c.close();
         return res;
     }
+
 
     private String getCorrectNumber(String address, int type){
         if(type == 1){
@@ -114,8 +156,8 @@ public class SmsManager {
         }
     }
 
-    private ArrayList<Sms> getAllSms(String where) {
-        ArrayList<Sms> res = new ArrayList<Sms>();
+    private ArrayList<Message> getAllSms(String where) {
+        ArrayList<Message> res = new ArrayList<Message>();
 
         Cursor c = _context.getContentResolver().query(SMS_INBOX_CONTENT_URI, COLUMNS, where, null, SORT_ORDER_LIMIT + smsNumber);
         Log.d("getAllSMS", String.valueOf(c.getCount()));
@@ -126,23 +168,28 @@ public class SmsManager {
 
                 String sender = ContactsManager.getContactName(_context, address);
                 String receiver = _context.getString(R.string.chat_me);
-                Sms sms = new Sms(Tools.getInt(c, "_id"),
-                        Tools.getString(c, "body"),
-                        Tools.getString(c, "address"),
-                        Tools.getDateMilliSeconds(c, "date"));
-                res.add(sms);
+                Message message = new MessageBuilder(Tools.getInt(c, "_id"))
+                        .setSMSMessage()
+                        .setContent(Tools.getString(c, "body"))
+                        .setNumber(Tools.getString(c, "address"))
+                        .setSentDate(Tools.getDateMilliSeconds(c, "date"))
+                        .build();
+
+                res.add(message);
             }
             c.close();
         }
         return res;
     }
 
-    public List<ConvoThread> getAllThreads() {
+    public List<Conversation> getAllThreads() {
         logger.info("Getting all threads");
-        List<ConvoThread> threads = new ArrayList<>();
+        List<Conversation> threads = new ArrayList<>();
         ContentResolver cr = _context.getContentResolver();
         Cursor query = cr.query(THREADS_CONTENT_URI, THREAD_COL, null, null, null);
-        logger.info("Count: {}", query.getCount());
+        for(String col : query.getColumnNames()){
+            logger.info("Column : {}", col);
+        }
         if (query.moveToFirst()) {
             do {
                 String type = Tools.getString(query, "ct_t");
@@ -167,27 +214,49 @@ public class SmsManager {
                                     body = Tools.getString(subQuery, "text");
                                 }
                                 logger.info("MMS text message: {}", body);
-                            } else {
-                                logger.info("Not text MMS message!");
+                            } else if ("image/jpeg".equals(mmsType) ||
+                                        "image/bmp".equals(mmsType) ||
+                                        "image/gif".equals(mmsType) ||
+                                        "image/jpg".equals(mmsType) ||
+                                        "image/png".equals(mmsType)) {
+                                Bitmap bitmap = getMmsImage(partID);
+
+                                Message message = new MessageBuilder(0)
+                                        .setContent(encodeToBase64(bitmap, Bitmap.CompressFormat.JPEG, 100))
+                                        .build();
+
+
+                                Conversation conversation = new ConversationBuilder(Tools.getInt(query, "thread_id"))
+                                        .setAddress(getNumber(DMApplication.getAppContext(), partID))
+                                        .setAddress(getLastUnownedSms(Tools.getInt(query, "thread_id")).getNumber())
+                                        .setLastMessageDate(Tools.getLong(query, "date"))
+                                        .hasUnread(Tools.getInt(query, "read") == 1)
+                                        .setLastMessage(message)
+                                        .build();
+
+                                threads.add(conversation);
+
                             }
                         } while(subQuery.moveToNext());
                     }
                 } else {
                     logger.info("Type is SMS!");
-                    ConvoThread convoThread = new ConvoThread();
-                    logger.info("ThreadBundle Details: [{}] Date: {} ThreadBundle ID: {} Read: {} Address: {}",
+                    logger.info("ConversationMessageBundle Details: [{}] Date: {} ConversationMessageBundle ID: {} Read: {} Address: {}",
                             Tools.getString(query, "_id"),
                             Tools.getString(query, "date"),
                             Tools.getString(query, "thread_id"),
                             Tools.getInt(query, "read"),
                             Tools.getString(query, "address"));
 
-                    convoThread.thread_id = Tools.getInt(query, "thread_id");
-                    convoThread.body = getLastSmsForThread(convoThread.thread_id).get(0).getMessage();
-                    convoThread.date = Tools.getLong(query, "date");
-                    convoThread.read = Tools.getInt(query, "read") == 1;
-                    convoThread.address = Tools.getString(query, "address");
-                    threads.add(convoThread);
+                    int threadID = Tools.getInt(query, "thread_id");
+                    Conversation conversation = new ConversationBuilder(threadID)
+                            .setAddress(Tools.getString(query, "address"))
+                            .setLastMessageDate(Tools.getLong(query, "date"))
+                            .hasUnread(Tools.getInt(query, "read") == 1)
+                            .setLastMessage(getLastSmsForThread(threadID).get(0))
+                            .build();
+
+                    threads.add(conversation);
                 }
 
             } while (query.moveToNext());
@@ -229,5 +298,46 @@ public class SmsManager {
             }
         }
         return sb.toString();
+    }
+
+    private Bitmap getMmsImage(String _id) {
+        Uri partURI = Uri.parse("content://mms/part/" + _id);
+        InputStream is = null;
+        Bitmap bitmap = null;
+        try {
+            is = DMApplication.getAppContext().getContentResolver().openInputStream(partURI);
+            bitmap = BitmapFactory.decodeStream(is);
+        } catch (IOException e) { logger.error("Error", e);}
+        finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) { logger.error("Error", e);}
+            }
+        }
+        return bitmap;
+    }
+
+    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        image.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
+    }
+    private static String getNumber(Context c, String id) {
+        String add = "";
+        final String[] projection = new String[]{"address"};
+        Uri.Builder builder = Uri.parse("content://mms").buildUpon();
+        builder.appendPath(String.valueOf(id)).appendPath("addr");
+        Cursor cursor = c.getContentResolver().query(
+                builder.build(),
+                projection,
+                "type=" + 0x97,
+                null, null);
+        if (cursor.moveToFirst()) {
+            add = cursor.getString(cursor.getColumnIndex("address"));
+        }
+        cursor.close();
+        return add;
     }
 }

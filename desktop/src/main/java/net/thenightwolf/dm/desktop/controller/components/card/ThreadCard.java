@@ -15,9 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import net.thenightwolf.dm.common.model.message.Contact;
-import net.thenightwolf.dm.common.model.message.ConvoThread;
-import net.thenightwolf.dm.common.model.message.Sms;
+import net.thenightwolf.dm.common.model.message.Conversation;
+import net.thenightwolf.dm.common.model.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,43 +42,53 @@ public class ThreadCard extends AnchorPane {
     private Label threadDate;
 
     private String number;
-    private ConvoThread convoThread;
+    private Conversation conversation;
 
 
-    public ThreadCard(ConvoThread thread, String name){
+    public ThreadCard(Conversation thread, String name) {
         load();
-        this.convoThread = thread;
-        setContactImage(new Image("/view/icons/account_black_48.png"));
+        this.conversation = thread;
+        DefaultContactImage image = new DefaultContactImage();
+        setContactImage(image.getImage(name.substring(0, 1)));
         setContactName(name);
-        setNumber(thread.address);
+        setNumber(thread.getAddress());
 
-        if(thread.body != null)
-            setThreadSnippet(thread.body);
-        else
-            setThreadSnippet("Null");
+        int threadType = thread.getLastMessage().getMessageType();
+        if (threadType == Message.SMS_TYPE) {
+            if (thread.getLastMessage().getContent() != null) {
+                setThreadSnippet(thread.getLastMessage().getContent());
+            }
+        } else {
+            setThreadSnippet("Attachment");
+        }
 
-        setThreadDate(dateForm.format(new Date(thread.date)));
+        setThreadDate(dateForm.format(new Date(thread.getLastMessageDate())));
     }
 
-    public ThreadCard(Sms sms, String name){
+    public ThreadCard(Message message, String name) {
         load();
-        setContactImage(new Image("/view/icons/account_black_48.png"));
+        DefaultContactImage image = new DefaultContactImage();
+        setContactImage(image.getImage(name.substring(0, 1)));
         setContactName(name);
-        setNumber(sms.getNumber());
+        setNumber(message.getNumber());
 
-        if(sms.getMessage() != null)
-            setThreadSnippet(sms.getMessage());
-        else
-            setThreadSnippet("Null");
+        int messageType = message.getMessageType();
+        if (messageType == Message.SMS_TYPE) {
+            if (message.getContent() != null) {
+                setThreadSnippet(message.getContent());
+            }
+        } else {
+            setThreadSnippet("Attachment");
+        }
 
-        setThreadDate(dateForm.format(sms.getSentDate()));
+        setThreadDate(dateForm.format(message.getSentDate()));
     }
 
-    public ThreadCard(){
+    public ThreadCard() {
         load();
     }
 
-    private void load(){
+    private void load() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource));
         loader.setRoot(this);
         loader.setController(this);
@@ -91,35 +100,35 @@ public class ThreadCard extends AnchorPane {
         }
     }
 
-    public void setContactImage(Image image){
+    public void setContactImage(Image image) {
         contactImage.setImage(image);
     }
 
-    public void setContactName(String name){
+    public void setContactName(String name) {
         contactName.setText(name);
     }
 
-    public void setThreadSnippet(String snippet){
+    public void setThreadSnippet(String snippet) {
         threadSnippet.setText(snippet);
     }
 
-    public void setThreadDate(String snippet){
+    public void setThreadDate(String snippet) {
         threadDate.setText(snippet);
     }
 
-    public void setThreadDate(Date date){
+    public void setThreadDate(Date date) {
         setThreadDate(dateForm.format(date));
     }
 
-    public StringProperty getContactNameProperty(){
+    public StringProperty getContactNameProperty() {
         return contactName.textProperty();
     }
 
-    public StringProperty getThreadSnippetProperty(){
+    public StringProperty getThreadSnippetProperty() {
         return threadSnippet.textProperty();
     }
 
-    public StringProperty getThreadDateProperty(){
+    public StringProperty getThreadDateProperty() {
         return threadDate.textProperty();
     }
 
@@ -131,8 +140,12 @@ public class ThreadCard extends AnchorPane {
         this.number = number;
     }
 
+    public Image getContactImage(){
+        return contactImage.getImage();
+    }
 
-    public ConvoThread getConvoThread() {
-        return convoThread;
+
+    public Conversation getConversation() {
+        return conversation;
     }
 }

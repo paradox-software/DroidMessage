@@ -16,7 +16,7 @@ import android.provider.ContactsContract;
 import net.thenightwolf.dm.android.DMApplication;
 import net.thenightwolf.dm.android.R;
 import net.thenightwolf.dm.common.model.message.Contact;
-import net.thenightwolf.dm.common.model.message.Phone;
+import net.thenightwolf.dm.common.model.message.PhoneFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +46,7 @@ public class ContactsManager {
                 if (c != null) {
                     if (c.moveToFirst()) {
                         res = Tools.getString(c, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-                        res += " " + Phone.cleanPhoneNumber(phoneNumber);
+                        res += " " + net.thenightwolf.dm.common.model.message.PhoneFormatter.cleanPhoneNumber(phoneNumber);
                     }
                     c.close();
                 }

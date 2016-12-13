@@ -23,6 +23,7 @@ import javax.annotation.PostConstruct;
 
 @FXMLController(value = "/view/SideMenu.fxml", title = "DroidMessage")
 public class SideMenuController {
+
     @FXMLViewFlowContext
     private ViewFlowContext context;
 
@@ -38,7 +39,7 @@ public class SideMenuController {
         sideList.propagateMouseEventsToParent();
         FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
         Flow contentFlow = (Flow) context.getRegisteredObject("ContentFlow");
-        bindNodeToController(home, MessengerOverviewController.class, contentFlow, contentFlowHandler);
+        bindNodeToController(home, net.thenightwolf.dm.desktop.controller.inner.MessengerOverviewController.class, contentFlow, contentFlowHandler);
     }
 
     private void bindNodeToController(Node node, Class<?> controllerClass, Flow flow, FlowHandler flowHandler) {

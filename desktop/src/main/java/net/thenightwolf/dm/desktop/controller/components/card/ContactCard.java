@@ -48,7 +48,9 @@ public class ContactCard extends AnchorPane {
         this.contact = contact;
         setContactName(contact.name);
         setContactNumber(contact.cleanNumber);
-        setContactImage(new Image("/view/icons/account_black_48.png"));
+
+        DefaultContactImage image = new DefaultContactImage();
+        setContactImage(image.getImage(contact.name.substring(0, 1)));
     }
 
     private void load(){
