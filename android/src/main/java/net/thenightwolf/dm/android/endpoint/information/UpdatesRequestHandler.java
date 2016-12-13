@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import net.thenightwolf.dm.android.DMApplication;
 import net.thenightwolf.dm.android.endpoint.request.Authenticator;
 import net.thenightwolf.dm.android.endpoint.request.StandardRequestHandler;
+import net.thenightwolf.dm.android.generator.update.IUpdateGenerator;
 import net.thenightwolf.dm.common.model.message.Message;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD;
@@ -18,31 +19,23 @@ import java.util.Map;
 public class UpdatesRequestHandler extends StandardRequestHandler {
 
     private IStatus status = Status.BAD_REQUEST;
+    private IUpdateGenerator updateGenerator;
 
     @Override
     public String postMethod(Map<String, String> params, IHTTPSession session) throws IOException, NanoHTTPD.ResponseException {
-
         Authenticator auth = new Authenticator();
         if(auth.authenticate(session)) {
-
-            List<Message> latestSms = new ArrayList<Message>();
-            Message current;
-            while((current = DMApplication.getMessageQueue().poll()) != null){
-                latestSms.add(current);
-            }
-
             status = Status.OK;
-            return new Gson().toJson(latestSms);
+            return new Gson().toJson(updateGenerator.getLatestMessages());
         } else {
             status = Status.UNAUTHORIZED;
             return auth.buildErrorResponse();
         }
-
-
     }
 
     @Override
     public String getMethod(Map<String, String> params, IHTTPSession session) throws IOException, NanoHTTPD.ResponseException {
+
         return null;
     }
 

@@ -3,9 +3,10 @@ package net.thenightwolf.dm.android.endpoint.information;
 import com.google.gson.Gson;
 import net.thenightwolf.dm.android.endpoint.request.Authenticator;
 import net.thenightwolf.dm.android.endpoint.request.StandardRequestHandler;
+import net.thenightwolf.dm.android.generator.manifest.IManifestGenerator;
 import net.thenightwolf.dm.android.utils.SessionUtils;
 import net.thenightwolf.dm.common.model.Manifest;
-import net.thenightwolf.dm.android.manifest.ManifestGenerator;
+import net.thenightwolf.dm.android.generator.manifest.ManifestGenerator;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD;
 import org.nanohttpd.protocols.http.response.IStatus;
@@ -20,6 +21,7 @@ public class ManifestRequestHandler extends StandardRequestHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(ManifestRequestHandler.class);
 
+    private IManifestGenerator manifestGenerator;
     private Status status;
 
     @Override
@@ -42,7 +44,7 @@ public class ManifestRequestHandler extends StandardRequestHandler {
         logger.info("Checking authentication...");
         Authenticator auth = new Authenticator();
         if(auth.authenticate(session)) {
-            Manifest manifest = new ManifestGenerator().generate();
+            Manifest manifest = manifestGenerator.generate();
             status = Status.OK;
             return new Gson().toJson(manifest);
         } else {

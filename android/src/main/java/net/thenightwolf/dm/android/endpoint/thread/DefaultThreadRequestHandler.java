@@ -2,6 +2,7 @@ package net.thenightwolf.dm.android.endpoint.thread;
 
 import com.google.gson.Gson;
 import net.thenightwolf.dm.android.DMApplication;
+import net.thenightwolf.dm.android.generator.thread.IThreadGenerator;
 import net.thenightwolf.dm.android.message.SmsManager;
 import net.thenightwolf.dm.android.endpoint.request.StandardRequestHandler;
 import net.thenightwolf.dm.android.utils.SessionUtils;
@@ -16,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DefaultThreadRequestHandler extends StandardRequestHandler {
+
+    private IThreadGenerator threadGenerator;
 
     @Override
     public String getText() {
@@ -34,9 +37,8 @@ public class DefaultThreadRequestHandler extends StandardRequestHandler {
 
     @Override
     public String postMethod(Map<String, String> params, IHTTPSession session) throws IOException, NanoHTTPD.ResponseException {
-        SmsManager smsManager = new SmsManager(DMApplication.getAppContext());
-        List<Conversation> threads = smsManager.getAllThreads();
-        return new Gson().toJson(threads);
+
+        return new Gson().toJson(threadGenerator.getAllConversations());
     }
 
     @Override

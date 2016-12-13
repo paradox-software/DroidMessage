@@ -1,26 +1,22 @@
-package net.thenightwolf.dm.android.information;
+package net.thenightwolf.dm.android.generator.information;
 
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import com.google.gson.Gson;
 import net.thenightwolf.dm.android.DMApplication;
 import net.thenightwolf.dm.common.model.ServerInformation;
-import org.nanohttpd.protocols.http.response.IStatus;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import static android.content.Context.WIFI_SERVICE;
 
-public class ServerInformationGenerator {
+public class ServerInformationGenerator implements IServerInformationGenerator {
 
-    public String getInformationJson() {
+    public ServerInformation getServerInformation() {
         ServerInformation information = new ServerInformation();
         information.hostname = "null";
         information.version = DMApplication.getVERSION();
         information.IPAddress = getIP();
 
-        return new Gson().toJson(information);
+        return information;
     }
 
     private String getIP(){

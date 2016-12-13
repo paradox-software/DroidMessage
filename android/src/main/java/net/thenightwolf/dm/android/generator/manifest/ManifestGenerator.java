@@ -1,4 +1,4 @@
-package net.thenightwolf.dm.android.manifest;
+package net.thenightwolf.dm.android.generator.manifest;
 
 import net.thenightwolf.dm.android.DMApplication;
 import net.thenightwolf.dm.common.model.Manifest;
@@ -9,9 +9,11 @@ import net.thenightwolf.dm.android.message.SmsManager;
 
 import java.util.List;
 
-public class ManifestGenerator {
-    List<Contact> contacts;
-    List<Conversation> threads;
+public class ManifestGenerator implements IManifestGenerator {
+
+    private List<Contact> contacts;
+    private List<Conversation> threads;
+
     public Manifest generate(){
         contacts = ContactsManager.getAllContacts();
 
