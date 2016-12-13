@@ -73,5 +73,12 @@ launch4j {
     jar = "lib/${project.tasks.shadowJar.archiveName}"
 }
 
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'

@@ -63,7 +63,7 @@ public class RefresherSubscriber {
                                     card.setThreadSnippet(message.getContent());
                                     card.setThreadDate(message.getSentDate());
                                 } else {
-                                    refresher.getThreadCardList().add(new ThreadCard(message, refresher.numberToName(bundle, message)));
+                                    refresher.getThreadCardList().add(new ThreadCard(message, refresher.getName(bundle, message)));
                                 }
                             }
                         }
